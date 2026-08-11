@@ -270,18 +270,18 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* GPS-ID 002 Highlight */}
+      {/* Children / Students ID Card Highlight */}
       <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
              <div>
-                <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-zinc-900">GPS-ID 002 4G</h2>
+                <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-zinc-900">Children / Students ID Card</h2>
                 <p className="text-xl text-slate-600 mb-8 max-w-lg leading-relaxed">
-                  The ultimate personal safety device. Keep track of what matters most with two-way calling and global 4G connectivity.
+                  4G GPS tracker in an ID card format for children and students with real-time location tracking, SOS alerts and geofencing.
                 </p>
                 
                 <ul className="space-y-4 mb-10">
-                  {['Live Tracking', '4G Global', 'SOS Call', 'Walkie Talkie', 'Two Way Calling', 'Geofence'].map((feature, i) => (
+                  {['Real Time Tracking', 'Safety Alerts', 'SOS Button', 'Set Safe Zone', 'Two Way Voice Calling', 'Monitoring'].map((feature, i) => (
                     <li key={i} className="flex items-center gap-4 text-lg text-slate-700 font-medium">
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-orange-600">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -293,15 +293,15 @@ export default async function Home() {
                   ))}
                 </ul>
 
-                <Link href="/shop/gps-id-002-4g" className={buttonVariants({ size: "lg", className: "bg-zinc-900 hover:bg-zinc-800 text-white h-14 px-8 text-lg rounded-full" })}>
+                <Link href="/shop/children-students-id-card" className={buttonVariants({ size: "lg", className: "bg-zinc-900 hover:bg-zinc-800 text-white h-14 px-8 text-lg rounded-full" })}>
                   View Product
                 </Link>
              </div>
              
              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/images/products/gps-id002-variants.jpg"
-                  alt="GPS-ID 002 4G in Black, Blue and Pink variants"
+                  src="/images/products/children-id-card.png"
+                  alt="Children / Students ID Card Tracker"
                   fill
                   className="object-cover"
                 />

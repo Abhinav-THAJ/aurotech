@@ -62,23 +62,22 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
           : 'bg-white border-transparent'
       )}
     >
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-20 md:h-28 flex items-center justify-between relative">
         {/* Logo */}
-        <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="relative w-40 h-12">
-              <Image 
-                src="/logo.png" 
-                alt="AURO GPS" 
-                fill 
-                className="object-contain" 
-                priority 
-              />
-            </div>
-          </Link>
+        <Link href="/" className="flex items-center gap-2 flex-shrink-0 z-10">
+          <div className="relative w-[200px] h-[64px] md:w-[270px] md:h-[85px]">
+            <Image 
+              src="/logo.png" 
+              alt="AURO GPS" 
+              fill 
+              className="object-contain" 
+              priority 
+            />
+          </div>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
             {/* Home */}
             <Link
               href="/"
@@ -263,11 +262,10 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
             >
               Contact
             </Link>
-          </nav>
-        </div>
+        </nav>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 z-10">
           <Button variant="ghost" size="icon" className="hidden sm:flex">
             <Search className="h-5 w-5" />
             <span className="sr-only">Search</span>

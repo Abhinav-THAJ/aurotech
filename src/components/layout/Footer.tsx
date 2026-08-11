@@ -10,7 +10,7 @@ export function Footer() {
         {/* Brand / Contact */}
         <div className="space-y-6">
           <Link href="/" className="inline-block">
-            <div className="relative w-40 h-12">
+            <div className="relative w-[200px] h-[64px] md:w-[270px] md:h-[85px]">
               <Image 
                 src="/logo.png" 
                 alt="AURO GPS" 
@@ -132,13 +132,33 @@ export function Footer() {
                 Privacy Policy
               </Link>
             </li>
+            <li>
+              <Link href="/terms-and-conditions" className="hover:text-orange-500 transition-colors">
+                Terms and Conditions
+              </Link>
+            </li>
+            <li>
+              <Link href="/refund-policy" className="hover:text-orange-500 transition-colors">
+                Refund Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/shipping-policy" className="hover:text-orange-500 transition-colors">
+                Shipping Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/disclaimer" className="hover:text-orange-500 transition-colors">
+                Disclaimer
+              </Link>
+            </li>
           </ul>
         </div>
 
       </div>
       
       <div className="container mx-auto px-4 mt-16 pt-8 border-t border-zinc-800 text-sm text-slate-500 flex flex-col md:flex-row justify-between items-center">
-        <p>&copy; {new Date().getFullYear()} AURO GPS. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} AURO TECH.   .ALL RIGHTS RESERVED..</p>
         <p className="mt-2 md:mt-0">Premium GPS Tracking Solutions.</p>
       </div>
     </footer>

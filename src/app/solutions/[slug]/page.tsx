@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Metadata } from 'next';
+import { cn } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -56,10 +57,10 @@ export default async function SolutionDetailPage({ params }: Props) {
               {solution.shortDescription}
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/contact" className={buttonVariants({ size: "lg", className: "bg-orange-600 hover:bg-orange-700 h-14 px-8 text-lg rounded-full" })}>
+              <Link href="/contact" className={cn(buttonVariants({ size: "lg", className: "bg-orange-600 hover:bg-orange-700 h-14 px-8 text-lg rounded-full text-white" }))}>
                 Get a Demo
               </Link>
-              <Link href="/shop" className={buttonVariants({ variant: "outline", size: "lg", className: "h-14 px-8 text-lg rounded-full border-zinc-700 text-white hover:bg-zinc-800 hover:text-white" })}>
+              <Link href="/shop" className={cn(buttonVariants({ variant: "outline", size: "lg", className: "h-14 px-8 text-lg rounded-full border-zinc-700 bg-transparent text-white hover:bg-zinc-800 hover:text-white" }))}>
                 Compatible Hardware <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </div>
@@ -120,7 +121,7 @@ export default async function SolutionDetailPage({ params }: Props) {
           <p className="text-xl text-orange-100 mb-10 leading-relaxed">
             Contact our enterprise team today to discuss how {solution.title} can be customized for your specific requirements.
           </p>
-          <Link href="/contact" className={buttonVariants({ size: "lg", className: "bg-white text-orange-600 hover:bg-orange-50 h-14 px-10 text-lg rounded-full font-bold" })}>
+          <Link href="/contact" className={cn(buttonVariants({ size: "lg", className: "bg-white text-orange-600 hover:bg-orange-50 h-14 px-10 text-lg rounded-full font-bold" }))}>
             Contact Sales Team
           </Link>
         </div>
