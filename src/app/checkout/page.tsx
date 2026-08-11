@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ShieldCheck, Lock } from 'lucide-react';
+import Script from 'next/script';
 
 export default function CheckoutPage() {
   const { items, clearCart } = useCartStore();
@@ -50,8 +51,58 @@ export default function CheckoutPage() {
       const data = await response.json();
       
       if (data.success) {
-        clearCart();
-        router.push(`/order-confirmation?order=${data.orderId}`);
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: data.amount,
+          currency: data.currency,
+          name: "AURO GPS",
+          description: "Purchase",
+          image: "/logo.png",
+          order_id: data.razorpayOrderId,
+          handler: async function (response: any) {
+            // Payment successful, verify and update WooCommerce
+            try {
+              const verifyRes = await fetch('/api/verify-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  woocommerce_order_id: data.orderId,
+                }),
+              });
+              
+              const verifyData = await verifyRes.json();
+              if (verifyData.success) {
+                clearCart();
+                router.push(`/order-confirmation?order=${data.orderId}&payment_id=${response.razorpay_payment_id}`);
+              } else {
+                alert('Payment verification failed. Please contact support.');
+                setIsProcessing(false);
+              }
+            } catch (err) {
+              console.error('Verify error:', err);
+              alert('An error occurred during payment verification.');
+              setIsProcessing(false);
+            }
+          },
+          prefill: {
+            name: `${customer.firstName} ${customer.lastName}`,
+            email: customer.email,
+            contact: customer.phone,
+          },
+          theme: {
+            color: "#ea580c" // orange-600
+          }
+        };
+
+        const rzp1 = new (window as any).Razorpay(options);
+        rzp1.on('payment.failed', function (response: any) {
+          alert('Payment failed: ' + response.error.description);
+          setIsProcessing(false);
+        });
+        rzp1.open();
       } else {
         alert('Failed to place order. Please try again.');
         setIsProcessing(false);
@@ -75,6 +126,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="bg-slate-50 min-h-screen pb-24">
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <div className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-4 py-8 flex justify-between items-center text-sm font-medium text-slate-500">
           <div className="flex items-center gap-2">
@@ -158,25 +210,18 @@ export default function CheckoutPage() {
                   <h2 className="text-2xl font-bold">Payment</h2>
                   <Lock className="w-5 h-5 text-slate-400" />
                 </div>
-                <div className="border border-slate-200 rounded-xl p-4 bg-slate-50 mb-4 flex items-center justify-between cursor-pointer ring-2 ring-orange-500">
+                <div className="border border-slate-200 rounded-xl p-4 bg-slate-50 flex items-center justify-between cursor-pointer ring-2 ring-orange-500">
                   <div className="flex items-center gap-3">
                     <input type="radio" defaultChecked className="text-orange-600 focus:ring-orange-500 w-4 h-4" />
-                    <span className="font-medium">Credit / Debit Card (Stripe)</span>
+                    <span className="font-medium">Razorpay (Cards, UPI, NetBanking)</span>
                   </div>
                   <div className="flex gap-2">
-                    <div className="w-10 h-6 bg-slate-200 rounded text-[8px] flex items-center justify-center font-bold">VISA</div>
-                    <div className="w-10 h-6 bg-slate-200 rounded text-[8px] flex items-center justify-center font-bold">MC</div>
+                    <div className="w-10 h-6 bg-slate-200 rounded text-[8px] flex items-center justify-center font-bold">SECURE</div>
                   </div>
                 </div>
-                
-                <div className="space-y-4 pt-4">
-                  <Input required placeholder="Card number" className="h-12" />
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input required placeholder="Expiration date (MM / YY)" className="h-12" />
-                    <Input required placeholder="Security code" className="h-12" />
-                  </div>
-                  <Input required placeholder="Name on card" className="h-12" />
-                </div>
+                <p className="text-sm text-slate-500 mt-4">
+                  You will be securely redirected to Razorpay to complete your purchase after clicking "Pay".
+                </p>
               </div>
 
             </form>

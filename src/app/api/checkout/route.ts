@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { api } from '@/lib/woocommerce';
+import Razorpay from 'razorpay';
 
 export async function POST(request: Request) {
   try {
@@ -14,8 +15,8 @@ export async function POST(request: Request) {
 
     // Create WooCommerce order object
     const orderData = {
-      payment_method: 'bacs', // Defaulting to bank transfer / manual for now
-      payment_method_title: 'Direct Bank Transfer',
+      payment_method: 'razorpay',
+      payment_method_title: 'Razorpay (Card/UPI/NetBanking)',
       set_paid: false,
       billing: {
         first_name: customer.firstName,
@@ -51,10 +52,30 @@ export async function POST(request: Request) {
 
     // Post order to WooCommerce
     const response = await api.post('orders', orderData);
+    const wcOrder = response.data;
 
-    return NextResponse.json({ success: true, orderId: response.data.id });
+    // Create Razorpay Order
+    const razorpay = new Razorpay({
+      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID as string,
+      key_secret: process.env.RAZORPAY_KEY_SECRET as string,
+    });
+
+    const amountInPaise = Math.round(parseFloat(wcOrder.total) * 100);
+    const rzpOrder = await razorpay.orders.create({
+      amount: amountInPaise,
+      currency: wcOrder.currency || 'INR',
+      receipt: `receipt_wc_${wcOrder.id}`,
+    });
+
+    return NextResponse.json({ 
+      success: true, 
+      orderId: wcOrder.id,
+      razorpayOrderId: rzpOrder.id,
+      amount: amountInPaise,
+      currency: wcOrder.currency || 'INR',
+    });
   } catch (error: any) {
-    console.error('WooCommerce Order Error:', error.response?.data || error.message);
+    console.error('Order Error:', error.response?.data || error.message);
     return NextResponse.json({ success: false, error: 'Failed to create order' }, { status: 500 });
   }
 }
