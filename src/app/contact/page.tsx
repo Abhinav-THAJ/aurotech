@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MapPin, Phone, Mail, MessageSquare } from 'lucide-react';
 import { Metadata } from 'next';
+import ContactForm from '@/components/contact/ContactForm';
 
 export const metadata: Metadata = {
   title: 'Contact Us | AURO GPS',
@@ -64,37 +65,7 @@ export default function ContactPage() {
           <div className="lg:col-span-2">
             <div className="bg-white p-8 lg:p-12 rounded-3xl shadow-sm border border-slate-100">
               <h2 className="text-2xl font-bold mb-8">Send us a Message</h2>
-              <form className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">First Name</label>
-                    <Input placeholder="John" className="h-12" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Last Name</label>
-                    <Input placeholder="Doe" className="h-12" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-                  <Input type="email" placeholder="john@example.com" className="h-12" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Subject</label>
-                  <Input placeholder="How can we help?" className="h-12" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>
-                  <textarea 
-                    rows={5} 
-                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Tell us about your requirements..."
-                  ></textarea>
-                </div>
-                <Button size="lg" className="w-full bg-orange-600 hover:bg-orange-700 h-14 text-lg rounded-xl">
-                  Send Message
-                </Button>
-              </form>
+              <ContactForm />
             </div>
           </div>
         </div>
