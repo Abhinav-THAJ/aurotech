@@ -9,7 +9,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SOLUTIONS_DATA } from '@/lib/data';
 import { Category, Product } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { cn, formatPrice } from '@/lib/utils';
 import { CartDrawer } from '../cart/CartDrawer';
 
 const solutionIconMap: Record<string, React.ReactNode> = {
@@ -161,10 +161,10 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
                                       {product.name}
                                     </p>
                                     <p className="text-xs text-slate-500 font-medium">
-                                      ₹₹{parseFloat(product.price).toFixed(2)}
-                                      {product.regular_price && product.on_sale && (
+                                      {formatPrice(product.price) || 'Contact for Price'}
+                                      {product.regular_price && product.on_sale && formatPrice(product.regular_price) && (
                                         <span className="line-through text-slate-400 ml-1 font-normal text-[10px]">
-                                          ₹₹{parseFloat(product.regular_price).toFixed(2)}
+                                          {formatPrice(product.regular_price)}
                                         </span>
                                       )}
                                     </p>
@@ -271,21 +271,25 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
         </nav>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-2 z-10">
-          <Button variant="ghost" size="icon" className="hidden sm:flex">
-            <Search className="h-5 w-5" />
+        <div className="flex items-center gap-2 z-10 text-slate-700">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hidden sm:flex text-slate-700 hover:text-orange-600 hover:bg-slate-100 transition-colors"
+          >
+            <Search className="h-5 w-5 text-slate-700" />
             <span className="sr-only">Search</span>
           </Button>
 
           <Button
             variant="ghost"
             size="icon"
-            className="relative"
+            className="relative text-slate-700 hover:text-orange-600 hover:bg-slate-100 transition-colors"
             onClick={() => setCartOpen(true)}
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-5 w-5 text-slate-700" />
             {cartItemsCount > 0 && (
-              <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-orange-600 text-[10px] font-bold text-white">
+              <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-orange-600 text-[10px] font-bold text-white shadow-sm">
                 {cartItemsCount}
               </span>
             )}
@@ -294,8 +298,8 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
 
           {/* Mobile sheet */}
           <Sheet>
-            <SheetTrigger render={<Button variant="ghost" size="icon" className="lg:hidden" />}>
-              <Menu className="h-6 w-6" />
+            <SheetTrigger render={<Button variant="ghost" size="icon" className="lg:hidden text-slate-700 hover:text-orange-600 hover:bg-slate-100 transition-colors" />}>
+              <Menu className="h-6 w-6 text-slate-700" />
               <span className="sr-only">Toggle Menu</span>
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">

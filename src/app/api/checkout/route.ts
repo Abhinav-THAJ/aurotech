@@ -39,6 +39,7 @@ export async function POST(request: Request) {
         state: customer.state,
         postcode: customer.postcode,
         country: customer.country,
+        phone: customer.phone,
       },
       line_items: line_items,
       shipping_lines: [
@@ -65,6 +66,9 @@ export async function POST(request: Request) {
       amount: amountInPaise,
       currency: wcOrder.currency || 'INR',
       receipt: `receipt_wc_${wcOrder.id}`,
+      notes: {
+        woocommerce_order_id: String(wcOrder.id),
+      },
     });
 
     return NextResponse.json({ 

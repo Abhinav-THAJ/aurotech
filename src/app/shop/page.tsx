@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getProducts, getCategories } from '@/lib/woocommerce';
 import { buttonVariants } from '@/components/ui/button';
+import { formatPrice } from '@/lib/utils';
 
 export const metadata = {
   title: 'Shop All GPS Trackers | AURO GPS',
@@ -92,10 +93,10 @@ export default async function ShopPage() {
                   </Link>
                   <div className="flex items-center justify-between mt-auto pt-4">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-xl">₹₹{parseFloat(product.price).toFixed(2)}</span>
-                      {product.on_sale && product.regular_price && (
+                      <span className="font-bold text-xl">{formatPrice(product.price) || 'Contact for Price'}</span>
+                      {product.on_sale && product.regular_price && formatPrice(product.regular_price) && (
                         <span className="text-sm text-slate-400 line-through">
-                          ₹₹{parseFloat(product.regular_price).toFixed(2)}
+                          {formatPrice(product.regular_price)}
                         </span>
                       )}
                     </div>

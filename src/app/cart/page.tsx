@@ -6,12 +6,13 @@ import Image from 'next/image';
 import { useCartStore } from '@/lib/store';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
+import { formatPrice } from '@/lib/utils';
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem } = useCartStore();
 
   const subtotal = items.reduce(
-    (total, item) => total + parseFloat(item.product.price) * item.quantity,
+    (total, item) => total + (parseFloat(item.product.price) || 0) * item.quantity,
     0
   );
 
@@ -63,7 +64,7 @@ export default function CartPage() {
                   <Link href={`/shop/${item.product.slug}`} className="font-semibold text-lg hover:text-orange-600 transition-colors line-clamp-2 mb-1">
                     {item.product.name}
                   </Link>
-                  <p className="text-slate-500 font-medium">₹₹{parseFloat(item.product.price).toFixed(2)}</p>
+                  <p className="text-slate-500 font-medium">{formatPrice(item.product.price)}</p>
                 </div>
               </div>
 
@@ -94,10 +95,10 @@ export default function CartPage() {
               {/* Total */}
               <div className="col-span-1 sm:col-span-2 text-right">
                 <span className="font-bold text-lg hidden sm:block">
-                  ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                  ₹{((parseFloat(item.product.price) || 0) * item.quantity).toFixed(2)}
                 </span>
                 <span className="font-bold text-lg sm:hidden">
-                  Total: ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                  Total: ₹{((parseFloat(item.product.price) || 0) * item.quantity).toFixed(2)}
                 </span>
               </div>
 

@@ -15,7 +15,7 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const subtotal = items.reduce(
-    (total, item) => total + parseFloat(item.product.price) * item.quantity,
+    (total, item) => total + (parseFloat(item.product.price) || 0) * item.quantity,
     0
   );
   
@@ -258,7 +258,7 @@ export default function CheckoutPage() {
                       <h4 className="text-sm font-medium line-clamp-2 leading-tight">{item.product.name}</h4>
                     </div>
                     <div className="font-medium text-sm">
-                      ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                      ₹{((parseFloat(item.product.price) || 0) * item.quantity).toFixed(2)}
                     </div>
                   </div>
                 ))}
@@ -286,7 +286,7 @@ export default function CheckoutPage() {
                 className="w-full bg-orange-600 hover:bg-orange-700 h-16 text-xl rounded-xl font-bold shadow-lg shadow-orange-600/20"
                 disabled={isProcessing}
               >
-                {isProcessing ? 'Processing...' : `Pay ₹{total.toFixed(2)}`}
+                {isProcessing ? 'Processing...' : `Pay ₹${total.toFixed(2)}`}
               </Button>
             </div>
           </div>

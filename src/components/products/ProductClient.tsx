@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/lib/store';
 import { Minus, Plus, ShoppingCart, Heart, ShieldCheck, Truck, RotateCcw } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { formatPrice } from '@/lib/utils';
 
 interface ProductClientProps {
   product: Product;
@@ -86,11 +87,11 @@ export function ProductClient({ product }: ProductClientProps) {
           <div className="flex items-center gap-6 mb-8 pb-8 border-b border-slate-100">
             <div className="flex items-baseline gap-3">
               <span className="text-4xl font-extrabold text-slate-900">
-                ₹₹{parseFloat(product.price).toFixed(2)}
+                {formatPrice(product.price) || 'Contact for Price'}
               </span>
-              {product.on_sale && product.regular_price && (
+              {product.on_sale && product.regular_price && formatPrice(product.regular_price) && (
                 <span className="text-xl font-medium text-slate-400 line-through">
-                  ₹₹{parseFloat(product.regular_price).toFixed(2)}
+                  {formatPrice(product.regular_price)}
                 </span>
               )}
             </div>

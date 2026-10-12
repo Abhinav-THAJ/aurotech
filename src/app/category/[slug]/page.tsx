@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getCategoryBySlug, getProductsByCategory, getCategories } from '@/lib/woocommerce';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Metadata } from 'next';
+import { formatPrice } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -125,10 +126,10 @@ export default async function CategoryPage({ params }: Props) {
                     </Link>
                     <div className="flex items-center justify-between mt-auto pt-4">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-xl">₹₹{parseFloat(product.price).toFixed(2)}</span>
-                        {product.on_sale && product.regular_price && (
+                        <span className="font-bold text-xl">{formatPrice(product.price) || 'Contact for Price'}</span>
+                        {product.on_sale && product.regular_price && formatPrice(product.regular_price) && (
                           <span className="text-sm text-slate-400 line-through">
-                            ₹₹{parseFloat(product.regular_price).toFixed(2)}
+                            {formatPrice(product.regular_price)}
                           </span>
                         )}
                       </div>

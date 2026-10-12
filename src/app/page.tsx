@@ -4,6 +4,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight, ShieldCheck, BatteryCharging, Zap, MapPin } from "lucide-react";
 import { SOLUTIONS_DATA } from "@/lib/data";
 import { getProducts } from "@/lib/woocommerce";
+import { formatPrice } from "@/lib/utils";
 
 export const revalidate = 0;
 
@@ -129,10 +130,10 @@ export default async function Home() {
                     {product.name}
                   </h3>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-xl">₹₹{parseFloat(product.price).toFixed(2)}</span>
-                    {product.on_sale && product.regular_price && (
+                    <span className="font-bold text-xl">{formatPrice(product.price) || 'Contact for Price'}</span>
+                    {product.on_sale && product.regular_price && formatPrice(product.regular_price) && (
                       <span className="text-sm text-slate-400 line-through">
-                        ₹₹{parseFloat(product.regular_price).toFixed(2)}
+                        {formatPrice(product.regular_price)}
                       </span>
                     )}
                   </div>

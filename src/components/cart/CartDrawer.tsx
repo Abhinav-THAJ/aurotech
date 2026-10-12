@@ -7,12 +7,13 @@ import { useCartStore } from '@/lib/store';
 import Image from 'next/image';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
+import { formatPrice } from '@/lib/utils';
 
 export function CartDrawer() {
   const { items, removeItem, updateQuantity, cartOpen, setCartOpen } = useCartStore();
 
   const subtotal = items.reduce(
-    (total, item) => total + parseFloat(item.product.price) * item.quantity,
+    (total, item) => total + (parseFloat(item.product.price) || 0) * item.quantity,
     0
   );
 
@@ -56,7 +57,7 @@ export function CartDrawer() {
                   <div className="flex justify-between">
                     <div>
                       <h4 className="text-sm font-medium line-clamp-2">{item.product.name}</h4>
-                      <p className="text-sm text-slate-500 mt-1">₹₹{parseFloat(item.product.price).toFixed(2)}</p>
+                      <p className="text-sm text-slate-500 mt-1">{formatPrice(item.product.price)}</p>
                     </div>
                     <Button variant="ghost" size="icon" onClick={() => removeItem(item.product.id)} className="h-8 w-8 text-slate-400 hover:text-red-500">
                       <Trash2 className="w-4 h-4" />

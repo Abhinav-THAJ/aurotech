@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ProductClient } from '@/components/products/ProductClient';
 import { Product } from '@/lib/types';
 import { Metadata } from 'next';
+import { formatPrice } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -102,11 +103,11 @@ export default async function ProductPage({ params }: Props) {
                   <div className="mt-auto flex items-center justify-between pt-4">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-slate-900 text-lg">
-                        ₹₹{parseFloat(p.price || '0').toFixed(2)}
+                        {formatPrice(p.price) || 'Contact for Price'}
                       </span>
-                      {p.on_sale && p.regular_price && (
+                      {p.on_sale && p.regular_price && formatPrice(p.regular_price) && (
                         <span className="text-sm text-slate-400 line-through">
-                          ₹₹{parseFloat(p.regular_price).toFixed(2)}
+                          {formatPrice(p.regular_price)}
                         </span>
                       )}
                     </div>
