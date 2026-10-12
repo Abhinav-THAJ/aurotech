@@ -29,7 +29,9 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
   const solutionsRef = useRef<HTMLDivElement>(null);
 
   const cartItemsCount = useCartStore((state) =>
-    state.items.reduce((acc, item) => acc + item.quantity, 0)
+    (state.items || [])
+      .filter((i) => i.product && typeof i.product.id === 'number' && i.product.id > 0)
+      .reduce((acc, item) => acc + item.quantity, 0)
   );
   const setCartOpen = useCartStore((state) => state.setCartOpen);
 

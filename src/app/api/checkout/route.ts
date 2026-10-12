@@ -7,11 +7,29 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { items, customer } = body;
 
+    // Filter out any invalid items
+    const validItems = (items || []).filter(
+      (item: any) => item?.product?.id && Number(item.product.id) > 0
+    );
+
+    if (validItems.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Your cart does not contain valid items. Please clear cart and re-add.' },
+        { status: 400 }
+      );
+    }
+
     // Map cart items to WooCommerce line_items format
-    const line_items = items.map((item: any) => ({
-      product_id: item.product.id,
-      quantity: item.quantity,
-    }));
+    const line_items = validItems.map((item: any) => {
+      const unitPrice = parseFloat(item.product.price) || 0;
+      const itemTotal = (unitPrice * item.quantity).toFixed(2);
+      return {
+        product_id: Number(item.product.id),
+        quantity: item.quantity,
+        subtotal: itemTotal,
+        total: itemTotal,
+      };
+    });
 
     // Create WooCommerce order object
     const orderData = {

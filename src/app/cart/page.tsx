@@ -11,12 +11,16 @@ import { formatPrice } from '@/lib/utils';
 export default function CartPage() {
   const { items, updateQuantity, removeItem } = useCartStore();
 
-  const subtotal = items.reduce(
+  const validItems = items.filter(
+    (item) => item.product && typeof item.product.id === 'number' && item.product.id > 0
+  );
+
+  const subtotal = validItems.reduce(
     (total, item) => total + (parseFloat(item.product.price) || 0) * item.quantity,
     0
   );
 
-  if (items.length === 0) {
+  if (validItems.length === 0) {
     return (
       <div className="container mx-auto px-4 py-24 min-h-[60vh] flex flex-col items-center justify-center text-center">
         <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
@@ -44,7 +48,7 @@ export default function CartPage() {
             <div className="col-span-1"></div>
           </div>
           
-          {items.map((item) => (
+          {validItems.map((item) => (
             <div key={item.product.id} className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center py-6 border-b">
               {/* Product Info */}
               <div className="col-span-1 sm:col-span-6 flex gap-6 items-center">

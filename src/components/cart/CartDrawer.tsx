@@ -12,7 +12,11 @@ import { formatPrice } from '@/lib/utils';
 export function CartDrawer() {
   const { items, removeItem, updateQuantity, cartOpen, setCartOpen } = useCartStore();
 
-  const subtotal = items.reduce(
+  const validItems = items.filter(
+    (item) => item.product && typeof item.product.id === 'number' && item.product.id > 0
+  );
+
+  const subtotal = validItems.reduce(
     (total, item) => total + (parseFloat(item.product.price) || 0) * item.quantity,
     0
   );
@@ -21,14 +25,14 @@ export function CartDrawer() {
     <Sheet open={cartOpen} onOpenChange={setCartOpen}>
       <SheetContent className="flex flex-col w-full sm:max-w-lg">
         <SheetHeader>
-          <SheetTitle>Your Cart ({items.length})</SheetTitle>
+          <SheetTitle>Your Cart ({validItems.length})</SheetTitle>
           <SheetDescription>
             Review your items before proceeding to checkout.
           </SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto py-6 flex flex-col gap-6">
-          {items.length === 0 ? (
+          {validItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center text-slate-500 space-y-4">
               <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
                 <Trash2 className="w-8 h-8 text-slate-300" />
@@ -39,7 +43,7 @@ export function CartDrawer() {
               </Link>
             </div>
           ) : (
-            items.map((item) => (
+            validItems.map((item) => (
               <div key={item.product.id} className="flex gap-4 border-b pb-4">
                 <div className="relative w-24 h-24 bg-slate-100 rounded-md overflow-hidden flex-shrink-0">
                   {item.product.images[0] ? (

@@ -21,12 +21,16 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set) => ({
       items: [],
-      addItem: (product, quantity = 1) =>
+      addItem: (product, quantity = 1) => {
+        if (!product || typeof product.id !== 'number' || product.id <= 0) return;
         set((state) => {
-          const existingItem = state.items.find((i) => i.product.id === product.id);
+          const validItems = (state.items || []).filter(
+            (i) => i.product && typeof i.product.id === 'number' && i.product.id > 0
+          );
+          const existingItem = validItems.find((i) => i.product.id === product.id);
           if (existingItem) {
             return {
-              items: state.items.map((i) =>
+              items: validItems.map((i) =>
                 i.product.id === product.id
                   ? { ...i, quantity: i.quantity + quantity }
                   : i
@@ -34,16 +38,17 @@ export const useCartStore = create<CartStore>()(
               cartOpen: true,
             };
           }
-          return { items: [...state.items, { product, quantity }], cartOpen: true };
-        }),
+          return { items: [...validItems, { product, quantity }], cartOpen: true };
+        });
+      },
       removeItem: (productId) =>
         set((state) => ({
-          items: state.items.filter((i) => i.product.id !== productId),
+          items: state.items.filter((i) => i.product && i.product.id !== productId),
         })),
       updateQuantity: (productId, quantity) =>
         set((state) => ({
           items: state.items.map((i) =>
-            i.product.id === productId ? { ...i, quantity: Math.max(1, quantity) } : i
+            i.product && i.product.id === productId ? { ...i, quantity: Math.max(1, quantity) } : i
           ),
         })),
       clearCart: () => set({ items: [] }),
@@ -52,7 +57,18 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'aurogps-cart',
-      partialize: (state) => ({ items: state.items }), // Only persist items
+      partialize: (state) => ({
+        items: (state.items || []).filter(
+          (i) => i.product && typeof i.product.id === 'number' && i.product.id > 0
+        ),
+      }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.items = (state.items || []).filter(
+            (i) => i.product && typeof i.product.id === 'number' && i.product.id > 0
+          );
+        }
+      },
     }
   )
 );

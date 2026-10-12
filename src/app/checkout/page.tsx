@@ -14,13 +14,17 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const subtotal = items.reduce(
+  const validItems = items.filter(
+    (item) => item.product && typeof item.product.id === 'number' && item.product.id > 0
+  );
+
+  const subtotal = validItems.reduce(
     (total, item) => total + (parseFloat(item.product.price) || 0) * item.quantity,
     0
   );
   
   const shipping = 10.00;
-  const total = subtotal + (items.length > 0 ? shipping : 0);
+  const total = subtotal + (validItems.length > 0 ? shipping : 0);
 
   const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,7 +49,7 @@ export default function CheckoutPage() {
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, customer }),
+        body: JSON.stringify({ items: validItems, customer }),
       });
 
       const data = await response.json();
@@ -239,7 +243,7 @@ export default function CheckoutPage() {
               <h2 className="text-xl font-bold mb-6">Order Summary</h2>
               
               <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2">
-                {items.map((item) => (
+                {validItems.map((item) => (
                   <div key={item.product.id} className="flex gap-4 items-center">
                     <div className="relative w-16 h-16 bg-slate-50 rounded-lg overflow-hidden border border-slate-100 flex-shrink-0">
                       <div className="absolute -top-2 -right-2 w-5 h-5 bg-slate-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold z-10">
