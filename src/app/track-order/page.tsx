@@ -73,6 +73,7 @@ function TrackOrderContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [order, setOrder] = useState<OrderData | null>(null);
+  const [awbResult, setAwbResult] = useState<{ awb: string; tracking_url: string; courier?: string } | null>(null);
 
   const fetchTracking = async (query: string) => {
     const clean = query.trim().replace(/^#/, '');
@@ -81,6 +82,7 @@ function TrackOrderContent() {
     setLoading(true);
     setError('');
     setOrder(null);
+    setAwbResult(null);
 
     try {
       // Determine if query looks like numeric order ID or AWB
@@ -93,8 +95,11 @@ function TrackOrderContent() {
       if (data.success && data.order) {
         setOrder(data.order);
       } else if (data.success && data.tracking_url) {
-        // Direct AWB result
-        window.open(data.tracking_url, '_blank');
+        setAwbResult({
+          awb: data.awb || clean,
+          tracking_url: data.tracking_url,
+          courier: data.courier || 'Shiprocket Partner',
+        });
       } else {
         setError(data.error || 'No tracking information found. Please check the order number.');
       }
@@ -179,9 +184,35 @@ function TrackOrderContent() {
           <div className="bg-red-50 border border-red-200 text-red-800 rounded-2xl p-6 mb-10 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 mt-0.5 shrink-0 text-red-600" />
             <div>
-              <p className="font-semibold mb-1">Order Not Found</p>
+              <p className="font-semibold mb-1">Tracking Information</p>
               <p className="text-sm">{error}</p>
             </div>
+          </div>
+        )}
+
+        {/* Direct AWB Result Card */}
+        {awbResult && !order && (
+          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm text-center mb-10">
+            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Truck className="w-8 h-8" />
+            </div>
+            <h3 className="text-2xl font-black text-slate-900 mb-2">Shipment Found</h3>
+            <p className="text-slate-500 mb-1">
+              AWB Tracking Code: <strong className="font-mono text-slate-900">{awbResult.awb}</strong>
+            </p>
+            <p className="text-xs text-slate-400 mb-6">
+              Courier Partner: <span className="font-semibold text-slate-700">{awbResult.courier}</span>
+            </p>
+            <a
+              href={awbResult.tracking_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={buttonVariants({
+                className: 'bg-orange-600 hover:bg-orange-700 text-white rounded-2xl px-8 h-14 text-base font-bold shadow-lg shadow-orange-600/20 inline-flex items-center gap-2',
+              })}
+            >
+              Track Live on Shiprocket <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         )}
 
