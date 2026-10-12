@@ -70,13 +70,19 @@ export default function CheckoutPage() {
                   razorpay_payment_id: response.razorpay_payment_id,
                   razorpay_signature: response.razorpay_signature,
                   woocommerce_order_id: data.orderId,
+                  customer,
+                  items,
+                  totalAmount: total,
                 }),
               });
               
               const verifyData = await verifyRes.json();
               if (verifyData.success) {
                 clearCart();
-                router.push(`/order-confirmation?order=${data.orderId}&payment_id=${response.razorpay_payment_id}`);
+                const trackingParams = verifyData.shipmentId
+                  ? `&shipment_id=${verifyData.shipmentId}&awb=${verifyData.awb || ''}`
+                  : '';
+                router.push(`/order-confirmation?order=${data.orderId}&payment_id=${response.razorpay_payment_id}${trackingParams}`);
               } else {
                 alert('Payment verification failed. Please contact support.');
                 setIsProcessing(false);
@@ -104,7 +110,7 @@ export default function CheckoutPage() {
         });
         rzp1.open();
       } else {
-        alert('Failed to place order. Please try again.');
+        alert(`Failed to place order: ${data.error || 'Please try again.'}`);
         setIsProcessing(false);
       }
     } catch (error) {
@@ -261,17 +267,17 @@ export default function CheckoutPage() {
               <div className="space-y-4 border-t border-slate-200 pt-6 mb-6">
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal</span>
-                  <span className="font-medium text-slate-900">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium text-slate-900">₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Shipping</span>
-                  <span className="font-medium text-slate-900">${shipping.toFixed(2)}</span>
+                  <span className="font-medium text-slate-900">₹{shipping.toFixed(2)}</span>
                 </div>
               </div>
               
               <div className="border-t border-slate-200 pt-6 mb-8 flex justify-between items-end">
                 <span className="text-xl font-bold text-slate-900">Total</span>
-                <span className="text-3xl font-bold text-orange-600">${total.toFixed(2)}</span>
+                <span className="text-3xl font-bold text-orange-600">₹{total.toFixed(2)}</span>
               </div>
               
               <Button 
@@ -280,7 +286,7 @@ export default function CheckoutPage() {
                 className="w-full bg-orange-600 hover:bg-orange-700 h-16 text-xl rounded-xl font-bold shadow-lg shadow-orange-600/20"
                 disabled={isProcessing}
               >
-                {isProcessing ? 'Processing...' : `Pay $${total.toFixed(2)}`}
+                {isProcessing ? 'Processing...' : `Pay ₹{total.toFixed(2)}`}
               </Button>
             </div>
           </div>

@@ -63,7 +63,7 @@ export default function CartPage() {
                   <Link href={`/shop/${item.product.slug}`} className="font-semibold text-lg hover:text-orange-600 transition-colors line-clamp-2 mb-1">
                     {item.product.name}
                   </Link>
-                  <p className="text-slate-500 font-medium">${parseFloat(item.product.price).toFixed(2)}</p>
+                  <p className="text-slate-500 font-medium">₹₹{parseFloat(item.product.price).toFixed(2)}</p>
                 </div>
               </div>
 
@@ -124,7 +124,7 @@ export default function CartPage() {
             <div className="space-y-4 mb-8">
               <div className="flex justify-between text-slate-600">
                 <span>Subtotal</span>
-                <span className="font-medium text-slate-900">${subtotal.toFixed(2)}</span>
+                <span className="font-medium text-slate-900">₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Shipping</span>
@@ -138,7 +138,7 @@ export default function CartPage() {
             
             <div className="border-t border-slate-200 pt-6 mb-8 flex justify-between items-end">
               <span className="text-lg font-bold text-slate-900">Total</span>
-              <span className="text-3xl font-bold text-orange-600">${subtotal.toFixed(2)}</span>
+              <span className="text-3xl font-bold text-orange-600">₹{subtotal.toFixed(2)}</span>
             </div>
             
             <Link href="/checkout" className={buttonVariants({ className: "w-full bg-orange-600 hover:bg-orange-700 h-14 text-lg rounded-xl mb-4" })}>

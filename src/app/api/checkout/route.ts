@@ -75,7 +75,8 @@ export async function POST(request: Request) {
       currency: wcOrder.currency || 'INR',
     });
   } catch (error: any) {
-    console.error('Order Error:', error.response?.data || error.message);
-    return NextResponse.json({ success: false, error: 'Failed to create order' }, { status: 500 });
+    const errorMsg = error.response?.data?.message || error.message || 'Failed to create order';
+    console.error('Order Error:', error.response?.data || error);
+    return NextResponse.json({ success: false, error: errorMsg }, { status: 500 });
   }
 }

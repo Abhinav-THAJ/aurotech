@@ -114,11 +114,26 @@ export default function MyAccountPage() {
             
             <TabsContent value="orders" className="m-0">
               <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-                <h2 className="text-2xl font-bold mb-6">Order History</h2>
-                <div className="bg-slate-50 rounded-xl p-8 text-center text-slate-500 border border-slate-100">
-                  <Package className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                  <p className="mb-6">No order has been made yet.</p>
-                  <Link href="/shop" className={buttonVariants({ className: "bg-orange-600 hover:bg-orange-700 rounded-full" })}>Browse Products</Link>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                  <h2 className="text-2xl font-bold">Order History & Tracking</h2>
+                  <Link href="/track-order" className={buttonVariants({ className: "bg-orange-600 hover:bg-orange-700 rounded-xl" })}>
+                    Track Any Order →
+                  </Link>
+                </div>
+                <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100">
+                  <div className="max-w-md mx-auto text-center">
+                    <Package className="w-12 h-12 text-orange-600 mx-auto mb-3" />
+                    <h3 className="font-bold text-slate-900 mb-1">Track Live Delivery</h3>
+                    <p className="text-sm text-slate-500 mb-6">
+                      Have an order ID? Check real-time shipping status and Shiprocket courier details instantly.
+                    </p>
+                    <Link
+                      href="/track-order"
+                      className={buttonVariants({ className: "w-full bg-slate-900 hover:bg-slate-800 text-white rounded-xl h-12" })}
+                    >
+                      Open Live Tracking Portal
+                    </Link>
+                  </div>
                 </div>
               </div>
             </TabsContent>

@@ -161,10 +161,10 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
                                       {product.name}
                                     </p>
                                     <p className="text-xs text-slate-500 font-medium">
-                                      ${parseFloat(product.price).toFixed(2)}
+                                      ₹₹{parseFloat(product.price).toFixed(2)}
                                       {product.regular_price && product.on_sale && (
                                         <span className="line-through text-slate-400 ml-1 font-normal text-[10px]">
-                                          ${parseFloat(product.regular_price).toFixed(2)}
+                                          ₹₹{parseFloat(product.regular_price).toFixed(2)}
                                         </span>
                                       )}
                                     </p>
@@ -262,6 +262,12 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
             >
               Contact
             </Link>
+            <Link
+              href="/track-order"
+              className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-orange-600 rounded-md hover:bg-slate-50 transition-colors"
+            >
+              Track Order
+            </Link>
         </nav>
 
         {/* Right side actions */}
@@ -328,6 +334,7 @@ export function Header({ categories = [], products = [] }: { categories?: Catego
                 </div>
                 <Link href="/about" className="text-lg font-medium hover:text-orange-600 mt-2">About</Link>
                 <Link href="/contact" className="text-lg font-medium hover:text-orange-600">Contact</Link>
+                <Link href="/track-order" className="text-lg font-medium text-orange-600 hover:text-orange-700">Track Order</Link>
                 <Link href="/my-account" className="text-lg font-medium hover:text-orange-600">My Account</Link>
               </nav>
             </SheetContent>

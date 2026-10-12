@@ -56,7 +56,7 @@ export function CartDrawer() {
                   <div className="flex justify-between">
                     <div>
                       <h4 className="text-sm font-medium line-clamp-2">{item.product.name}</h4>
-                      <p className="text-sm text-slate-500 mt-1">${parseFloat(item.product.price).toFixed(2)}</p>
+                      <p className="text-sm text-slate-500 mt-1">₹₹{parseFloat(item.product.price).toFixed(2)}</p>
                     </div>
                     <Button variant="ghost" size="icon" onClick={() => removeItem(item.product.id)} className="h-8 w-8 text-slate-400 hover:text-red-500">
                       <Trash2 className="w-4 h-4" />
@@ -84,7 +84,7 @@ export function CartDrawer() {
           <SheetFooter className="flex-col gap-4 sm:flex-col border-t pt-6">
             <div className="flex justify-between items-center w-full mb-4">
               <span className="font-medium text-lg">Subtotal</span>
-              <span className="font-bold text-lg">${subtotal.toFixed(2)}</span>
+              <span className="font-bold text-lg">₹{subtotal.toFixed(2)}</span>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full">
               <Link href="/cart" className={buttonVariants({ variant: "outline", className: "w-full" })} onClick={() => setCartOpen(false)}>

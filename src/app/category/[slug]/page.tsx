@@ -125,10 +125,10 @@ export default async function CategoryPage({ params }: Props) {
                     </Link>
                     <div className="flex items-center justify-between mt-auto pt-4">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-xl">${parseFloat(product.price).toFixed(2)}</span>
+                        <span className="font-bold text-xl">₹₹{parseFloat(product.price).toFixed(2)}</span>
                         {product.on_sale && product.regular_price && (
                           <span className="text-sm text-slate-400 line-through">
-                            ${parseFloat(product.regular_price).toFixed(2)}
+                            ₹₹{parseFloat(product.regular_price).toFixed(2)}
                           </span>
                         )}
                       </div>

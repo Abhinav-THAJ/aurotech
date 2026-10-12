@@ -102,11 +102,11 @@ export default async function ProductPage({ params }: Props) {
                   <div className="mt-auto flex items-center justify-between pt-4">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-slate-900 text-lg">
-                        ${parseFloat(p.price || '0').toFixed(2)}
+                        ₹₹{parseFloat(p.price || '0').toFixed(2)}
                       </span>
                       {p.on_sale && p.regular_price && (
                         <span className="text-sm text-slate-400 line-through">
-                          ${parseFloat(p.regular_price).toFixed(2)}
+                          ₹₹{parseFloat(p.regular_price).toFixed(2)}
                         </span>
                       )}
                     </div>
